@@ -10,12 +10,18 @@
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
   </properties>
   <repositories>
     <repository>
-      <id>pagila</id>
-      <url>https://maven.pkg.github.com/d3vlin/pagila-packages</url>
+      <id>pagila-dto</id>
+      <url>https://maven.pkg.github.com/d3vlin/pagila-dto</url>
+    </repository>
+    <repository>
+      <id>pagila-entity</id>
+      <url>https://maven.pkg.github.com/d3vlin/pagila-entity</url>
     </repository>
   </repositories>
   <dependencies>
@@ -41,7 +47,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>${project.name}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -62,7 +67,7 @@
   <distributionManagement>
     <repository>
       <id>pagila</id>
-      <url>https://maven.pkg.github.com/d3vlin/pagila-packages</url>
+      <url>https://maven.pkg.github.com/d3vlin/pagila-mapper</url>
       <releases>
         <enabled>true</enabled>
       </releases>

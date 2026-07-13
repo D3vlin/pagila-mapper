@@ -1,4 +1,4 @@
-name: ENTITY Deploy
+name: MAPPER Deploy
 
 on:
   push:
@@ -20,13 +20,37 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-          server-id: pagila
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
+
+      - name: Configure Maven credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<EOF
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>pagila-dto</id>
+                <username>${MAVEN_USERNAME}</username>
+                <password>${MAVEN_PASSWORD}</password>
+              </server>
+              <server>
+                <id>pagila-entity</id>
+                <username>${MAVEN_USERNAME}</username>
+                <password>${MAVEN_PASSWORD}</password>
+              </server>
+              <server>
+                <id>pagila</id>
+                <username>${MAVEN_USERNAME}</username>
+                <password>${MAVEN_PASSWORD}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          MAVEN_USERNAME: ${{ github.actor }}
+          MAVEN_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Deploy package
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-        run: mvn -B deploy -s /home/runner/.m2/settings.xml --no-transfer-progress
+        run: mvn -B -ntp deploy
         working-directory: pagila-mapper
