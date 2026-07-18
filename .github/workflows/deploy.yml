@@ -1,12 +1,15 @@
 name: MAPPER Deploy
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: [ MAPPER CI ]
+    types: [ completed ]
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     permissions:
       contents: read
@@ -14,12 +17,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
 
       - name: Configure Maven credentials for GitHub Packages
         run: |
@@ -52,5 +58,4 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Deploy package
-        run: mvn -B -ntp deploy
-        working-directory: pagila-mapper
+        run: mvn -B -ntp -DskipTests deploy

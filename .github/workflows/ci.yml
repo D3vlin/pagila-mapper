@@ -4,11 +4,19 @@ on:
   pull_request:
     branches: [ main, develop ]
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
+
+concurrency:
+  group: mapper-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
@@ -18,6 +26,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
 
       - name: Configure Maven credentials for GitHub Packages
         run: |
@@ -46,4 +55,3 @@ jobs:
 
       - name: Build
         run: mvn -B -ntp clean verify
-        working-directory: pagila-mapper
