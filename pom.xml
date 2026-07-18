@@ -4,7 +4,7 @@
   <groupId>co.d3vlin</groupId>
   <artifactId>pagila-mapper</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>pagila-mapper</name>
   <url>https://github.com/D3vlin</url>
   <properties>
@@ -13,6 +13,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    <pagila.dto.version>1.0.0-SNAPSHOT</pagila.dto.version>
+    <pagila.entity.version>1.0.0-SNAPSHOT</pagila.entity.version>
+    <jackson.core.version>3.1.4</jackson.core.version>
   </properties>
   <repositories>
     <repository>
@@ -28,17 +31,22 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>7.0.2</version>
+      <version>7.0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.core.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>pagila-dto</artifactId>
-      <version>1.0.0</version>
+      <version>${pagila.dto.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>pagila-entity</artifactId>
-      <version>1.0.0</version>
+      <version>${pagila.entity.version}</version>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
@@ -72,8 +80,18 @@
         <enabled>true</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
+    <snapshotRepository>
+      <id>pagila</id>
+      <url>https://maven.pkg.github.com/d3vlin/pagila-mapper</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </snapshotRepository>
   </distributionManagement>
 </project>
